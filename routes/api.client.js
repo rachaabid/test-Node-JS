@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-// const passport = require('passport');
+const passport = require('passport');
 
 const {createClient, getClients, getClientById, update, deleteClient}=require('../Controlers/Ctrl.Client');
 
@@ -13,3 +13,5 @@ router.get('/Clients/:idClient', passport.authenticate('bearer', {session: false
 router.put('/Clients/:idClient', passport.authenticate('bearer', {session: false}),update);
 
 router.delete('/Clients/:idClient', passport.authenticate('bearer', {session: false}),deleteClient);
+
+module.exports = router;

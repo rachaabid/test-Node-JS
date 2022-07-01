@@ -10,3 +10,5 @@ router.put('/Commande/:idCommande', update);
 router.delete('/Commande/:idCommande', deleteCommande);
 router.put('/Commande/affect/:idCommande/:idProduit/:idClient', addId);
 router.put('/users/desaffect/:idCommande/:produitId/:clientId', pullId);
+
+module.exports = router;
