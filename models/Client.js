@@ -23,6 +23,9 @@ const ClientSchema = new Schema({
     required: [true, 'Role est obligatoire']
   },
 
+}, {
+  versionKey: false,
+  timestamps: true
 });
 
 const Client = mongoose.model('client', ClientSchema);

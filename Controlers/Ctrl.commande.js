@@ -1,4 +1,5 @@
 const Commande = require('../models/Commande');
+const Produit = require('../models/produit');
 
 
 exports.create = async (req, res) => {
@@ -8,7 +9,9 @@ exports.create = async (req, res) => {
       listeProduits: req.body.listeProduits,
       clientAssocié: req.body.clientAssocié
     });
-    await Commande.create(commande)
+    const commandeCreated = await Commande.create(commande)
+     await Commande.findByIdAndUpdate(commandeCreated._id, { $push: { listeProduits: req.params.idProduit, clientAssocié: req.user.clientId} }, { new: true });
+    await Produit.findByIdAndUpdate(req.params.idProduit, {$inc:{quantite: -1}}, {new: true});
     res.send({ message: 'saved' });
   } catch (error) {
     res.status(500).send({
@@ -28,20 +31,9 @@ exports.getCommandes = async (req, res) => {
   }
 }
 
-exports.addId = async (req, res) => {
-  try {
-    const affect = await Commande.findByIdAndUpdate(req.params.idCommande, { $push: { listeProduits: req.params.idProduit, clientAssocié: req.params.idClient} }, { new: true });
-    res.send({ message: 'product affected' });
-  } catch (error) {
-    res.status(500).send({
-      message: error.message || 'some error occured'
-    })
-  }
-}
-
 exports.pullId = async (req, res) => {
   try {
-    const desaffect = await Commande.findByIdAndUpdate(req.params.idCommande, { $pull: { listeProduits: req.params.produitId, clientAssocié:req.params.clientId } }, { new: true });
+    await Commande.findByIdAndUpdate(req.params.idCommande, { $pull: { listeProduits: req.params.produitId, clientAssocié:req.user.clientId } }, { new: true });
     res.send({ message: 'product desaffected' });
   } catch (error) {
     res.status(500).send({
@@ -63,7 +55,7 @@ exports.getCommandeById = async (req, res) => {
 
 exports.update = async (req, res) => {
   try {
-    const commandeUpd = await Commande.findByIdAndUpdate(req.params.idCommande);
+    await Commande.findByIdAndUpdate(req.params.idCommande, req.body);
     res.send({ message: ' updated' });
   } catch (error) {
     res.status(500).send({
@@ -74,7 +66,7 @@ exports.update = async (req, res) => {
 
 exports.deleteCommande = async (req, res) => {
   try {
-    const supp = await Commande.findByIdAndRemove(req.params.idCommande);
+    await Commande.findByIdAndRemove(req.params.idCommande);
     res.send({ message: ' deleted' });
   } catch (error) {
     res.status(500).send({

@@ -18,6 +18,9 @@ const ProduitSchema = new Schema({
     type: String,
     required: [true, 'Prix de vente est obligatoire']
   }
+}, {
+  versionKey: false,
+  timestamps: true
 });
 
 const Produit = mongoose.model('produit', ProduitSchema);

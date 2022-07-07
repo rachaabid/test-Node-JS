@@ -42,7 +42,7 @@ exports.getClientById = async (req, res) => {
 
 exports.update = async (req, res) => {
   try {
-    const clientUpd = await Client.findByIdAndUpdate(req.params.idClient);
+    const clientUpd = await Client.findByIdAndUpdate(req.params.idClient, req.body);
     res.send({ message: ' updated' });
   } catch (error) {
     res.status(500).send({

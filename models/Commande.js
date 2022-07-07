@@ -7,7 +7,10 @@ const CommandeSchema = new Schema({
     required: [true, 'prixTotalDeVente est obligatoire']
   },
   listeProduits: [{type: mongoose.Schema.Types.ObjectId, ref: 'produit'}],
-  clientAssocié: [{type: mongoose.Schema.Types.ObjectId, ref: 'client'}]
+  clientAssocié: {type: mongoose.Schema.Types.ObjectId, ref: 'client'}
+},{
+  versionKey: false,
+  timestamps: true
 });
 
 const Commande = mongoose.model('commande', CommandeSchema);
